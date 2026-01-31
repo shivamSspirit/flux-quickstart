@@ -52,24 +52,24 @@ npm run dev
 **Expected Output:**
 
 ```
-🚀 FluxRPC Quickstart
+FluxRPC Quickstart
 
-1️⃣  getBalance
+1. getBalance
    Wallet:  DLRPZSrex3dk58mbJxfKEaxPMazchNogvZDSh26BhgRi
    Balance: 0.035737443 SOL
    Latency: 145ms
 
-2️⃣  getLatestBlockhash
+2. getLatestBlockhash
    Blockhash: Zb6cPmjqh9UmdG4TP4QRVDsjFEinDzze8CY2mrgXgEv
    Valid until: 375,270,398
 
-3️⃣  getAccountInfo
+3. getAccountInfo
    Owner: 11111111111111111111111111111111
    Lamports: 35,737,443
    Executable: false
    Data size: 0 bytes
 
-✅ Done!
+Done!
 ```
 
 ## The 3 Essential Methods

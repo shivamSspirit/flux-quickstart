@@ -50,7 +50,7 @@ const FLUXRPC_API_KEY = process.env.FLUXRPC_API_KEY;
 const FLUXRPC_REGION = (process.env.FLUXRPC_REGION as Region) || 'eu';
 
 if (!FLUXRPC_API_KEY) {
-  console.error('\n❌ Missing FLUXRPC_API_KEY in .env file');
+  console.error('\nMissing FLUXRPC_API_KEY in .env file');
   console.error('   Get your key: https://dashboard.fluxbeam.xyz/admin/apikeys\n');
   process.exit(1);
 }
@@ -170,10 +170,10 @@ export async function getAccountInfo(address: string): Promise<AccountInfoResult
 async function demo(): Promise<void> {
   const WALLET = 'DLRPZSrex3dk58mbJxfKEaxPMazchNogvZDSh26BhgRi';
 
-  console.log('\n🚀 FluxRPC Quickstart\n');
+  console.log('\nFluxRPC Quickstart\n');
 
   // 1. getBalance - Check wallet balance
-  console.log('1️⃣  getBalance');
+  console.log('1. getBalance');
   const startTime = Date.now();
   const balance = await getBalance(WALLET);
   const latency = Date.now() - startTime;
@@ -182,13 +182,13 @@ async function demo(): Promise<void> {
   console.log(`   Latency: ${latency}ms\n`);
 
   // 2. getLatestBlockhash - Get blockhash for transactions
-  console.log('2️⃣  getLatestBlockhash');
+  console.log('2. getLatestBlockhash');
   const block = await getBlockhash();
   console.log(`   Blockhash: ${block.blockhash}`);
   console.log(`   Valid until: ${block.lastValidBlockHeight.toLocaleString()}\n`);
 
   // 3. getAccountInfo - Get account details
-  console.log('3️⃣  getAccountInfo');
+  console.log('3. getAccountInfo');
   const account = await getAccountInfo(WALLET);
   if (account.exists) {
     console.log(`   Owner: ${account.owner}`);
@@ -199,13 +199,13 @@ async function demo(): Promise<void> {
     console.log('   Account not found');
   }
 
-  console.log('\n✅ Done!\n');
+  console.log('\nDone!\n');
 }
 
 // Run demo when executed directly (not when imported as a library)
 if (require.main === module) {
   demo().catch((err: Error) => {
-    console.error('\n❌ Error:', err.message);
+    console.error('\nError:', err.message);
     process.exit(1);
   });
 }
