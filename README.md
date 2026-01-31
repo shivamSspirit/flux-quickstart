@@ -148,6 +148,10 @@ flux-quickstart/
 
 ## FluxRPC Endpoints
 
+```
+https://${REGION}.fluxrpc.com/?key=${API_KEY}
+```
+
 | Region | Endpoint |
 |--------|----------|
 | Europe | `https://eu.fluxrpc.com/?key=YOUR_KEY` |
