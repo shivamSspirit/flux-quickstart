@@ -8,13 +8,14 @@ Make your first Solana RPC call in under 2 minutes.
 |--------|--------------|---------|
 | `getBalance` | Check wallet SOL balance | `{ address, lamports, sol }` |
 | `getBlockhash` | Get blockhash for transactions | `{ blockhash, lastValidBlockHeight }` |
-| `getTransaction` | Look up transaction by signature | `{ found, success, fee, slot }` |
+| `getSlot` | Get current slot and block time | `{ slot, timestamp }` |
 
 ## Quick Start
 
 ```bash
 # 1. Clone & install
-git clone <repo-url> && cd fluxrpc-quickstart
+git clone https://github.com/shivamSspirit/flux-quickstart.git
+cd flux-quickstart
 npm install
 
 # 2. Add your API key
@@ -30,17 +31,17 @@ npm run dev
 🚀 FluxRPC Quickstart
 
 1️⃣  getBalance
-   Address: vines1vzrYbzLMRdu58ou5XTby4qAqVRLmqo36NKPTg
-   Balance: 8.5 SOL
+   Address: DLRPZSrex3dk58mbJxfKEaxPMazchNogvZDSh26BhgRi
+   Balance: 0.035 SOL
+   Latency: 145ms
 
 2️⃣  getLatestBlockhash
-   Blockhash: 4jPdy63xgBgn6ZuRkxABFXoQ9NmUgSV6exioKZeoSdXj
-   Valid until: 375,259,262
+   Blockhash: CrZEthopHdJNLp49aC3Dn7G1SMBRnzPGdECQnAZMicZM
+   Valid until block: 375,266,854
 
-3️⃣  getTransaction
-   Status: ✅ Success
-   Fee: 0.000005 SOL
-   Slot: 375,250,000
+3️⃣  getSlot
+   Current slot: 397,146,781
+   Block time: 2026-01-31T14:20:00.000Z
 
 ✅ Done!
 ```
@@ -50,17 +51,16 @@ npm run dev
 ### Setup
 
 ```typescript
-import { getBalance, getBlockhash, getTransaction } from './index';
+import { getBalance, getBlockhash, getSlot } from './index';
 ```
 
 ### Get Balance
 
 ```typescript
-const result = await getBalance('vines1vzrYbzLMRdu58ou5XTby4qAqVRLmqo36NKPTg');
+const result = await getBalance('YOUR_WALLET_ADDRESS');
 
 console.log(result.sol);      // 8.5
 console.log(result.lamports); // 8500000000
-console.log(result.address);  // vines1vzr...
 ```
 
 ### Get Blockhash
@@ -69,25 +69,21 @@ console.log(result.address);  // vines1vzr...
 const { blockhash, lastValidBlockHeight } = await getBlockhash();
 
 // Use blockhash when building transactions
-console.log(blockhash); // 4jPdy63xgBgn6ZuRkx...
 ```
 
-### Get Transaction
+### Get Slot
 
 ```typescript
-const tx = await getTransaction('5UfDuX7WXY18keiz...');
+const { slot, timestamp } = await getSlot();
 
-if (tx.found) {
-  console.log(tx.success); // true
-  console.log(tx.fee);     // 0.000005
-  console.log(tx.slot);    // 375250000
-}
+console.log(`Slot: ${slot}`);
+console.log(`Time: ${new Date(timestamp * 1000).toISOString()}`);
 ```
 
 ## Project Structure
 
 ```
-fluxrpc-quickstart/
+flux-quickstart/
 ├── src/
 │   └── index.ts    # Types, Config, Utils, RPC Methods, Demo
 ├── dist/           # Compiled output
@@ -110,12 +106,9 @@ interface BlockhashResult {
   lastValidBlockHeight: number;
 }
 
-interface TransactionResult {
-  signature: string;
-  found: boolean;
-  success?: boolean;
-  fee?: number;
-  slot?: number;
+interface SlotResult {
+  slot: number;
+  timestamp: number;
 }
 ```
 
@@ -123,8 +116,8 @@ interface TransactionResult {
 
 | Region | URL |
 |--------|-----|
-| Europe | `https://eu.fluxrpc.com?key=YOUR_KEY` |
-| US | `https://us.fluxrpc.com?key=YOUR_KEY` |
+| Europe | `https://eu.fluxrpc.com/?key=YOUR_KEY` |
+| US | `https://us.fluxrpc.com/?key=YOUR_KEY` |
 
 Set region in `.env`:
 ```env
@@ -139,7 +132,7 @@ FLUXRPC_REGION=eu
 | `npm run build` | Compile TypeScript |
 | `npm run dev` | Build + run |
 
-## Next Steps
+## Resources
 
 - [Get API Key](https://dashboard.fluxbeam.xyz/admin/apikeys)
 - [FluxRPC Docs](https://fluxrpc.com)

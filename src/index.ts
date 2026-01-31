@@ -1,7 +1,7 @@
 /**
  * FluxRPC Quickstart
  *
- * 3 essential RPC methods every Solana developer needs.
+ * Essential RPC methods every Solana developer needs.
  *
  * API Key: https://dashboard.fluxbeam.xyz/admin/apikeys
  * Docs: https://fluxrpc.com
@@ -12,7 +12,6 @@ import {
   PublicKey,
   LAMPORTS_PER_SOL,
   type BlockhashWithExpiryBlockHeight,
-  type VersionedTransactionResponse,
 } from '@solana/web3.js';
 import 'dotenv/config';
 
@@ -31,12 +30,9 @@ interface BlockhashResult {
   lastValidBlockHeight: number;
 }
 
-interface TransactionResult {
-  signature: string;
-  found: boolean;
-  success?: boolean;
-  fee?: number;
-  slot?: number;
+interface SlotResult {
+  slot: number;
+  timestamp: number;
 }
 
 type Region = 'eu' | 'us';
@@ -58,7 +54,7 @@ if (!FLUXRPC_API_KEY) {
 // Connection
 // =============================================================================
 
-const RPC_URL = `https://${FLUXRPC_REGION}.fluxrpc.com?key=${FLUXRPC_API_KEY}`;
+const RPC_URL = `https://${FLUXRPC_REGION}.fluxrpc.com/?key=${FLUXRPC_API_KEY}`;
 
 const connection = new Connection(RPC_URL, {
   commitment: 'confirmed',
@@ -125,28 +121,19 @@ export async function getBlockhash(): Promise<BlockhashResult> {
 }
 
 /**
- * Look up a transaction by signature
+ * Get current slot and block time
  *
  * @example
- * const tx = await getTransaction('5UfDuX7WXY18keiz...');
- * if (tx.found) console.log(`Fee: ${tx.fee} SOL`);
+ * const { slot } = await getSlot();
+ * console.log(`Current slot: ${slot}`);
  */
-export async function getTransaction(signature: string): Promise<TransactionResult> {
-  const tx: VersionedTransactionResponse | null = await connection.getTransaction(
-    signature,
-    { maxSupportedTransactionVersion: 0 }
-  );
-
-  if (!tx) {
-    return { signature, found: false };
-  }
+export async function getSlot(): Promise<SlotResult> {
+  const slot = await connection.getSlot();
+  const timestamp = await connection.getBlockTime(slot);
 
   return {
-    signature,
-    found: true,
-    success: tx.meta?.err === null,
-    fee: lamportsToSol(tx.meta?.fee ?? 0),
-    slot: tx.slot,
+    slot,
+    timestamp: timestamp || Date.now() / 1000,
   };
 }
 
@@ -155,36 +142,33 @@ export async function getTransaction(signature: string): Promise<TransactionResu
 // =============================================================================
 
 async function demo(): Promise<void> {
-  // Example data
-  const WALLET = 'vines1vzrYbzLMRdu58ou5XTby4qAqVRLmqo36NKPTg';
-  const TX_SIG = '5UfDuX7WXY18keiz9mZ6zKkY8JyNuLDFz2UEDLYwvdpFvoxw9fSgLz7EXi25FJRPBBjAmJo8Xc3DnjnV9CjGuVMA';
+  const WALLET = 'DLRPZSrex3dk58mbJxfKEaxPMazchNogvZDSh26BhgRi';
 
   console.log('\n🚀 FluxRPC Quickstart\n');
 
   // 1. getBalance
   console.log('1️⃣  getBalance');
+  const startTime = Date.now();
   const balance = await getBalance(WALLET);
+  const latency = Date.now() - startTime;
   console.log(`   Address: ${balance.address}`);
-  console.log(`   Balance: ${balance.sol} SOL\n`);
+  console.log(`   Balance: ${balance.sol} SOL`);
+  console.log(`   Latency: ${latency}ms\n`);
 
-  // 2. getBlockhash
+  // 2. getLatestBlockhash
   console.log('2️⃣  getLatestBlockhash');
   const block = await getBlockhash();
   console.log(`   Blockhash: ${block.blockhash}`);
-  console.log(`   Valid until: ${block.lastValidBlockHeight.toLocaleString()}\n`);
+  console.log(`   Valid until block: ${block.lastValidBlockHeight.toLocaleString()}\n`);
 
-  // 3. getTransaction
-  console.log('3️⃣  getTransaction');
-  const tx = await getTransaction(TX_SIG);
-  if (tx.found) {
-    console.log(`   Status: ${tx.success ? '✅ Success' : '❌ Failed'}`);
-    console.log(`   Fee: ${tx.fee} SOL`);
-    console.log(`   Slot: ${tx.slot?.toLocaleString()}`);
-  } else {
-    console.log('   Not found (old or invalid signature)');
-  }
+  // 3. getSlot
+  console.log('3️⃣  getSlot');
+  const slotInfo = await getSlot();
+  const blockTime = new Date(slotInfo.timestamp * 1000).toISOString();
+  console.log(`   Current slot: ${slotInfo.slot.toLocaleString()}`);
+  console.log(`   Block time: ${blockTime}\n`);
 
-  console.log('\n✅ Done!\n');
+  console.log('✅ Done!\n');
 }
 
 // Run demo
