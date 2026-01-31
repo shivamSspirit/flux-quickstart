@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-FluxRPC quickstart - 3 essential Solana RPC methods for beginners.
+flux-quickstart - 3 essential Solana RPC methods for beginners.
 
 ## Commands
 
@@ -13,6 +13,7 @@ npm install    # Install dependencies
 npm run dev    # Build and run
 npm run build  # Compile TypeScript only
 npm start      # Run compiled code
+npm run clean  # Remove dist folder
 ```
 
 ## The 3 Methods
@@ -27,12 +28,12 @@ npm start      # Run compiled code
 
 ```
 src/index.ts
-├── Types         → BalanceResult, BlockhashResult, AccountInfoResult
-├── Configuration → API key from .env, region selection
-├── Connection    → Solana Connection instance
-├── Utilities     → isValidPublicKey(), lamportsToSol()
-├── RPC Methods   → getBalance(), getBlockhash(), getAccountInfo()
-└── Demo          → demo() function showing all methods
+├── Types (exported)      → BalanceResult, BlockhashResult, AccountInfoResult
+├── Configuration         → API key from .env, region selection
+├── Connection (exported) → Solana Connection instance
+├── Utilities (exported)  → isValidPublicKey(), lamportsToSol()
+├── RPC Methods (exported)→ getBalance(), getBlockhash(), getAccountInfo()
+└── Demo                  → Runs only when executed directly
 ```
 
 ## Environment Variables

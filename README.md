@@ -1,18 +1,22 @@
 # FluxRPC Quickstart
 
-Your first Solana RPC call in under 2 minutes.
+> Get started with Solana RPC in 5 minutes using [FluxRPC](https://fluxrpc.com).
+
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue.svg)](https://www.typescriptlang.org/)
+[![Solana](https://img.shields.io/badge/Solana-Web3.js-purple.svg)](https://solana.com/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 ## What You'll Learn
 
-- ✅ Check wallet SOL balance
-- ✅ Get blockhash for transactions
-- ✅ Read account data from the blockchain
+- Check wallet SOL balance
+- Get blockhash for transactions
+- Read account data from the blockchain
 
 ## Quick Start
 
 ### 1. Get Your API Key
 
-Go to [dashboard.fluxbeam.xyz/admin/apikeys](https://dashboard.fluxbeam.xyz/admin/apikeys) and create a free API key.
+Visit [dashboard.fluxbeam.xyz/admin/apikeys](https://dashboard.fluxbeam.xyz/admin/apikeys) to create your free API key.
 
 ### 2. Clone & Install
 
@@ -40,7 +44,7 @@ FLUXRPC_REGION=eu
 npm run dev
 ```
 
-### Expected Output
+**Expected Output:**
 
 ```
 🚀 FluxRPC Quickstart
@@ -128,12 +132,12 @@ if (info.exists) {
 ```
 flux-quickstart/
 ├── src/
-│   └── index.ts      # Main code with 3 RPC methods
-├── dist/             # Compiled JavaScript
-├── .env.example      # Environment template
-├── .env              # Your config (git-ignored)
-├── package.json
-├── tsconfig.json
+│   └── index.ts       # RPC methods + demo
+├── dist/              # Compiled output
+├── .env.example       # Environment template
+├── .env               # Your API key (git-ignored)
+├── package.json       # Dependencies
+├── tsconfig.json      # TypeScript config
 └── README.md
 ```
 
@@ -155,15 +159,11 @@ flux-quickstart/
 
 ## Next Steps
 
-- 📖 [FluxRPC Documentation](https://fluxrpc.com)
-- 🔑 [Get API Key](https://dashboard.fluxbeam.xyz/admin/apikeys)
-- 📚 [Solana Cookbook](https://solanacookbook.com/)
-- 💻 [Solana Web3.js Docs](https://solana-labs.github.io/solana-web3.js/)
+- [FluxRPC Documentation](https://fluxrpc.com) - Full API reference
+- [Get API Key](https://dashboard.fluxbeam.xyz/admin/apikeys) - Create your key
+- [Solana Cookbook](https://solanacookbook.com/) - Recipes & patterns
+- [Solana Web3.js Docs](https://solana-labs.github.io/solana-web3.js/) - Official SDK
 
 ## License
 
 MIT
-
----
-
-Built with ❤️ for Solana developers

@@ -20,18 +20,18 @@ import 'dotenv/config';
 // Types
 // =============================================================================
 
-interface BalanceResult {
+export interface BalanceResult {
   address: string;
   lamports: number;
   sol: number;
 }
 
-interface BlockhashResult {
+export interface BlockhashResult {
   blockhash: string;
   lastValidBlockHeight: number;
 }
 
-interface AccountInfoResult {
+export interface AccountInfoResult {
   address: string;
   exists: boolean;
   owner?: string;
@@ -40,7 +40,7 @@ interface AccountInfoResult {
   dataLength?: number;
 }
 
-type Region = 'eu' | 'us';
+export type Region = 'eu' | 'us';
 
 // =============================================================================
 // Configuration
@@ -65,11 +65,17 @@ const connection = new Connection(RPC_URL, {
   commitment: 'confirmed',
 });
 
+/** Expose connection for advanced usage */
+export { connection };
+
 // =============================================================================
 // Utilities
 // =============================================================================
 
-function isValidPublicKey(address: string): boolean {
+/**
+ * Validate a Solana wallet address
+ */
+export function isValidPublicKey(address: string): boolean {
   try {
     new PublicKey(address);
     return true;
@@ -78,7 +84,10 @@ function isValidPublicKey(address: string): boolean {
   }
 }
 
-function lamportsToSol(lamports: number): number {
+/**
+ * Convert lamports to SOL (1 SOL = 1,000,000,000 lamports)
+ */
+export function lamportsToSol(lamports: number): number {
   return lamports / LAMPORTS_PER_SOL;
 }
 
@@ -193,8 +202,10 @@ async function demo(): Promise<void> {
   console.log('\n✅ Done!\n');
 }
 
-// Run demo
-demo().catch((err: Error) => {
-  console.error('\n❌ Error:', err.message);
-  process.exit(1);
-});
+// Run demo when executed directly (not when imported as a library)
+if (require.main === module) {
+  demo().catch((err: Error) => {
+    console.error('\n❌ Error:', err.message);
+    process.exit(1);
+  });
+}

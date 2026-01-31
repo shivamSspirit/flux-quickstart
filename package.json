@@ -1,16 +1,39 @@
 {
   "name": "fluxrpc-quickstart",
   "version": "1.0.0",
-  "description": "FluxRPC quickstart guide for Solana developers",
+  "description": "Get started with Solana RPC in 5 minutes using FluxRPC",
+  "author": "Shivam Soni",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shivamSspirit/flux-quickstart.git"
+  },
+  "homepage": "https://github.com/shivamSspirit/flux-quickstart#readme",
+  "bugs": {
+    "url": "https://github.com/shivamSspirit/flux-quickstart/issues"
+  },
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
     "build": "tsc",
     "start": "node dist/index.js",
-    "dev": "tsc && node dist/index.js"
+    "dev": "tsc && node dist/index.js",
+    "clean": "rm -rf dist"
   },
-  "keywords": ["solana", "rpc", "fluxrpc", "web3", "typescript"],
-  "license": "MIT",
+  "keywords": [
+    "solana",
+    "rpc",
+    "fluxrpc",
+    "fluxbeam",
+    "web3",
+    "blockchain",
+    "typescript",
+    "quickstart"
+  ],
   "dependencies": {
     "@solana/web3.js": "^1.98.4",
     "dotenv": "^16.4.0"
