@@ -19,17 +19,17 @@ npm run dev    # Build and run
 |----------|---------|
 | `getBalance(address)` | `{ address, lamports, sol }` |
 | `getBlockhash()` | `{ blockhash, lastValidBlockHeight }` |
-| `getSlot()` | `{ slot, timestamp }` |
+| `getAccountInfo(address)` | `{ owner, lamports, executable, dataLength }` |
 
 ## Code Structure
 
 ```
 src/index.ts
-├── Types         → BalanceResult, BlockhashResult, SlotResult
+├── Types         → BalanceResult, BlockhashResult, AccountInfoResult
 ├── Configuration → API key validation, region
 ├── Connection    → Reusable Connection instance
 ├── Utilities     → isValidPublicKey, lamportsToSol
-├── RPC Methods   → getBalance, getBlockhash, getSlot
+├── RPC Methods   → getBalance, getBlockhash, getAccountInfo
 └── Demo          → Example usage
 ```
 

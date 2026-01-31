@@ -12,6 +12,7 @@ import {
   PublicKey,
   LAMPORTS_PER_SOL,
   type BlockhashWithExpiryBlockHeight,
+  type AccountInfo,
 } from '@solana/web3.js';
 import 'dotenv/config';
 
@@ -30,9 +31,13 @@ interface BlockhashResult {
   lastValidBlockHeight: number;
 }
 
-interface SlotResult {
-  slot: number;
-  timestamp: number;
+interface AccountInfoResult {
+  address: string;
+  exists: boolean;
+  owner?: string;
+  lamports?: number;
+  executable?: boolean;
+  dataLength?: number;
 }
 
 type Region = 'eu' | 'us';
@@ -85,7 +90,7 @@ function lamportsToSol(lamports: number): number {
  * Get SOL balance of a wallet
  *
  * @example
- * const { sol } = await getBalance('vines1vzrYbzLMRdu58ou5XTby4qAqVRLmqo36NKPTg');
+ * const { sol } = await getBalance('YOUR_WALLET_ADDRESS');
  * console.log(`Balance: ${sol} SOL`);
  */
 export async function getBalance(address: string): Promise<BalanceResult> {
@@ -104,11 +109,11 @@ export async function getBalance(address: string): Promise<BalanceResult> {
 }
 
 /**
- * Get latest blockhash (required for transactions)
+ * Get latest blockhash (required for sending transactions)
  *
  * @example
  * const { blockhash } = await getBlockhash();
- * // Use blockhash when building a transaction
+ * // Use this blockhash when building your transaction
  */
 export async function getBlockhash(): Promise<BlockhashResult> {
   const result: BlockhashWithExpiryBlockHeight =
@@ -121,19 +126,31 @@ export async function getBlockhash(): Promise<BlockhashResult> {
 }
 
 /**
- * Get current slot and block time
+ * Get account information (owner, data size, executable status)
  *
  * @example
- * const { slot } = await getSlot();
- * console.log(`Current slot: ${slot}`);
+ * const info = await getAccountInfo('YOUR_WALLET_ADDRESS');
+ * if (info.exists) console.log(`Owner: ${info.owner}`);
  */
-export async function getSlot(): Promise<SlotResult> {
-  const slot = await connection.getSlot();
-  const timestamp = await connection.getBlockTime(slot);
+export async function getAccountInfo(address: string): Promise<AccountInfoResult> {
+  if (!isValidPublicKey(address)) {
+    throw new Error(`Invalid address: ${address}`);
+  }
+
+  const publicKey = new PublicKey(address);
+  const account: AccountInfo<Buffer> | null = await connection.getAccountInfo(publicKey);
+
+  if (!account) {
+    return { address, exists: false };
+  }
 
   return {
-    slot,
-    timestamp: timestamp || Date.now() / 1000,
+    address,
+    exists: true,
+    owner: account.owner.toBase58(),
+    lamports: account.lamports,
+    executable: account.executable,
+    dataLength: account.data.length,
   };
 }
 
@@ -146,29 +163,34 @@ async function demo(): Promise<void> {
 
   console.log('\n🚀 FluxRPC Quickstart\n');
 
-  // 1. getBalance
+  // 1. getBalance - Check wallet balance
   console.log('1️⃣  getBalance');
   const startTime = Date.now();
   const balance = await getBalance(WALLET);
   const latency = Date.now() - startTime;
-  console.log(`   Address: ${balance.address}`);
+  console.log(`   Wallet:  ${balance.address}`);
   console.log(`   Balance: ${balance.sol} SOL`);
   console.log(`   Latency: ${latency}ms\n`);
 
-  // 2. getLatestBlockhash
+  // 2. getLatestBlockhash - Get blockhash for transactions
   console.log('2️⃣  getLatestBlockhash');
   const block = await getBlockhash();
   console.log(`   Blockhash: ${block.blockhash}`);
-  console.log(`   Valid until block: ${block.lastValidBlockHeight.toLocaleString()}\n`);
+  console.log(`   Valid until: ${block.lastValidBlockHeight.toLocaleString()}\n`);
 
-  // 3. getSlot
-  console.log('3️⃣  getSlot');
-  const slotInfo = await getSlot();
-  const blockTime = new Date(slotInfo.timestamp * 1000).toISOString();
-  console.log(`   Current slot: ${slotInfo.slot.toLocaleString()}`);
-  console.log(`   Block time: ${blockTime}\n`);
+  // 3. getAccountInfo - Get account details
+  console.log('3️⃣  getAccountInfo');
+  const account = await getAccountInfo(WALLET);
+  if (account.exists) {
+    console.log(`   Owner: ${account.owner}`);
+    console.log(`   Lamports: ${account.lamports?.toLocaleString()}`);
+    console.log(`   Executable: ${account.executable}`);
+    console.log(`   Data size: ${account.dataLength} bytes`);
+  } else {
+    console.log('   Account not found');
+  }
 
-  console.log('✅ Done!\n');
+  console.log('\n✅ Done!\n');
 }
 
 // Run demo

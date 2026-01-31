@@ -8,7 +8,7 @@ Make your first Solana RPC call in under 2 minutes.
 |--------|--------------|---------|
 | `getBalance` | Check wallet SOL balance | `{ address, lamports, sol }` |
 | `getBlockhash` | Get blockhash for transactions | `{ blockhash, lastValidBlockHeight }` |
-| `getSlot` | Get current slot and block time | `{ slot, timestamp }` |
+| `getAccountInfo` | Get account details | `{ owner, lamports, executable, dataLength }` |
 
 ## Quick Start
 
@@ -31,17 +31,19 @@ npm run dev
 🚀 FluxRPC Quickstart
 
 1️⃣  getBalance
-   Address: DLRPZSrex3dk58mbJxfKEaxPMazchNogvZDSh26BhgRi
+   Wallet:  DLRPZSrex3dk58mbJxfKEaxPMazchNogvZDSh26BhgRi
    Balance: 0.035 SOL
    Latency: 145ms
 
 2️⃣  getLatestBlockhash
-   Blockhash: CrZEthopHdJNLp49aC3Dn7G1SMBRnzPGdECQnAZMicZM
-   Valid until block: 375,266,854
+   Blockhash: Zb6cPmjqh9UmdG4TP4QRVDsjFEinDzze8CY2mrgXgEv
+   Valid until: 375,270,398
 
-3️⃣  getSlot
-   Current slot: 397,146,781
-   Block time: 2026-01-31T14:20:00.000Z
+3️⃣  getAccountInfo
+   Owner: 11111111111111111111111111111111
+   Lamports: 35,737,443
+   Executable: false
+   Data size: 0 bytes
 
 ✅ Done!
 ```
@@ -51,7 +53,7 @@ npm run dev
 ### Setup
 
 ```typescript
-import { getBalance, getBlockhash, getSlot } from './index';
+import { getBalance, getBlockhash, getAccountInfo } from './index';
 ```
 
 ### Get Balance
@@ -59,8 +61,8 @@ import { getBalance, getBlockhash, getSlot } from './index';
 ```typescript
 const result = await getBalance('YOUR_WALLET_ADDRESS');
 
-console.log(result.sol);      // 8.5
-console.log(result.lamports); // 8500000000
+console.log(result.sol);      // 0.035
+console.log(result.lamports); // 35737443
 ```
 
 ### Get Blockhash
@@ -71,13 +73,17 @@ const { blockhash, lastValidBlockHeight } = await getBlockhash();
 // Use blockhash when building transactions
 ```
 
-### Get Slot
+### Get Account Info
 
 ```typescript
-const { slot, timestamp } = await getSlot();
+const account = await getAccountInfo('YOUR_WALLET_ADDRESS');
 
-console.log(`Slot: ${slot}`);
-console.log(`Time: ${new Date(timestamp * 1000).toISOString()}`);
+if (account.exists) {
+  console.log(account.owner);      // Program that owns this account
+  console.log(account.lamports);   // Balance in lamports
+  console.log(account.executable); // Is it a program?
+  console.log(account.dataLength); // Size of account data
+}
 ```
 
 ## Project Structure
@@ -106,9 +112,13 @@ interface BlockhashResult {
   lastValidBlockHeight: number;
 }
 
-interface SlotResult {
-  slot: number;
-  timestamp: number;
+interface AccountInfoResult {
+  address: string;
+  exists: boolean;
+  owner?: string;
+  lamports?: number;
+  executable?: boolean;
+  dataLength?: number;
 }
 ```
 
