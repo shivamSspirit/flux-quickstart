@@ -1,38 +1,53 @@
 # FluxRPC Quickstart
 
-Make your first Solana RPC call in under 2 minutes.
+Your first Solana RPC call in under 2 minutes.
 
-## 3 Essential Methods
+## What You'll Learn
 
-| Method | What it does | Returns |
-|--------|--------------|---------|
-| `getBalance` | Check wallet SOL balance | `{ address, lamports, sol }` |
-| `getBlockhash` | Get blockhash for transactions | `{ blockhash, lastValidBlockHeight }` |
-| `getAccountInfo` | Get account details | `{ owner, lamports, executable, dataLength }` |
+- ✅ Check wallet SOL balance
+- ✅ Get blockhash for transactions
+- ✅ Read account data from the blockchain
 
 ## Quick Start
 
+### 1. Get Your API Key
+
+Go to [dashboard.fluxbeam.xyz/admin/apikeys](https://dashboard.fluxbeam.xyz/admin/apikeys) and create a free API key.
+
+### 2. Clone & Install
+
 ```bash
-# 1. Clone & install
 git clone https://github.com/shivamSspirit/flux-quickstart.git
 cd flux-quickstart
 npm install
+```
 
-# 2. Add your API key
+### 3. Add Your API Key
+
+```bash
 cp .env.example .env
-# Edit .env → add your key from dashboard.fluxbeam.xyz/admin/apikeys
+```
 
-# 3. Run
+Edit `.env` and add your key:
+```env
+FLUXRPC_API_KEY=your-api-key-here
+FLUXRPC_REGION=eu
+```
+
+### 4. Run
+
+```bash
 npm run dev
 ```
 
-**Output:**
+### Expected Output
+
 ```
 🚀 FluxRPC Quickstart
 
 1️⃣  getBalance
    Wallet:  DLRPZSrex3dk58mbJxfKEaxPMazchNogvZDSh26BhgRi
-   Balance: 0.035 SOL
+   Balance: 0.035737443 SOL
    Latency: 145ms
 
 2️⃣  getLatestBlockhash
@@ -48,41 +63,63 @@ npm run dev
 ✅ Done!
 ```
 
-## Usage
+## The 3 Essential Methods
 
-### Setup
+### 1. getBalance
+
+Check how much SOL any wallet has.
 
 ```typescript
-import { getBalance, getBlockhash, getAccountInfo } from './index';
+const { sol } = await getBalance('YOUR_WALLET_ADDRESS');
+console.log(`Balance: ${sol} SOL`);
 ```
 
-### Get Balance
-
+**Returns:**
 ```typescript
-const result = await getBalance('YOUR_WALLET_ADDRESS');
-
-console.log(result.sol);      // 0.035
-console.log(result.lamports); // 35737443
+{
+  address: string;   // The wallet address
+  lamports: number;  // Balance in lamports (1 SOL = 1B lamports)
+  sol: number;       // Balance in SOL
+}
 ```
 
-### Get Blockhash
+### 2. getBlockhash
+
+Get the latest blockhash. **Required before sending any transaction.**
 
 ```typescript
-const { blockhash, lastValidBlockHeight } = await getBlockhash();
-
-// Use blockhash when building transactions
+const { blockhash } = await getBlockhash();
+// Use this blockhash when building your transaction
 ```
 
-### Get Account Info
+**Returns:**
+```typescript
+{
+  blockhash: string;           // Current blockhash
+  lastValidBlockHeight: number; // Block height until this hash is valid
+}
+```
+
+### 3. getAccountInfo
+
+Read account details from the blockchain.
 
 ```typescript
-const account = await getAccountInfo('YOUR_WALLET_ADDRESS');
+const info = await getAccountInfo('YOUR_WALLET_ADDRESS');
+if (info.exists) {
+  console.log(`Owner: ${info.owner}`);
+}
+```
 
-if (account.exists) {
-  console.log(account.owner);      // Program that owns this account
-  console.log(account.lamports);   // Balance in lamports
-  console.log(account.executable); // Is it a program?
-  console.log(account.dataLength); // Size of account data
+**Returns:**
+```typescript
+{
+  address: string;      // The account address
+  exists: boolean;      // Does the account exist?
+  owner?: string;       // Program that owns this account
+  lamports?: number;    // Balance in lamports
+  executable?: boolean; // Is this a program account?
+  dataLength?: number;  // Size of account data in bytes
 }
 ```
 
@@ -91,63 +128,42 @@ if (account.exists) {
 ```
 flux-quickstart/
 ├── src/
-│   └── index.ts    # Types, Config, Utils, RPC Methods, Demo
-├── dist/           # Compiled output
-├── .env.example    # Environment template
-├── .env            # Your API key (git-ignored)
-└── package.json
+│   └── index.ts      # Main code with 3 RPC methods
+├── dist/             # Compiled JavaScript
+├── .env.example      # Environment template
+├── .env              # Your config (git-ignored)
+├── package.json
+├── tsconfig.json
+└── README.md
 ```
 
-## Type Definitions
+## FluxRPC Endpoints
 
-```typescript
-interface BalanceResult {
-  address: string;
-  lamports: number;
-  sol: number;
-}
-
-interface BlockhashResult {
-  blockhash: string;
-  lastValidBlockHeight: number;
-}
-
-interface AccountInfoResult {
-  address: string;
-  exists: boolean;
-  owner?: string;
-  lamports?: number;
-  executable?: boolean;
-  dataLength?: number;
-}
-```
-
-## Endpoints
-
-| Region | URL |
-|--------|-----|
+| Region | Endpoint |
+|--------|----------|
 | Europe | `https://eu.fluxrpc.com/?key=YOUR_KEY` |
 | US | `https://us.fluxrpc.com/?key=YOUR_KEY` |
 
-Set region in `.env`:
-```env
-FLUXRPC_REGION=eu
-```
+## Commands
 
-## Scripts
-
-| Command | Description |
-|---------|-------------|
+| Command | What it does |
+|---------|--------------|
 | `npm install` | Install dependencies |
 | `npm run build` | Compile TypeScript |
-| `npm run dev` | Build + run |
+| `npm run dev` | Build and run |
+| `npm start` | Run compiled code |
 
-## Resources
+## Next Steps
 
-- [Get API Key](https://dashboard.fluxbeam.xyz/admin/apikeys)
-- [FluxRPC Docs](https://fluxrpc.com)
-- [Solana Cookbook](https://solanacookbook.com/)
+- 📖 [FluxRPC Documentation](https://fluxrpc.com)
+- 🔑 [Get API Key](https://dashboard.fluxbeam.xyz/admin/apikeys)
+- 📚 [Solana Cookbook](https://solanacookbook.com/)
+- 💻 [Solana Web3.js Docs](https://solana-labs.github.io/solana-web3.js/)
+
+## License
+
+MIT
 
 ---
 
-**Get your free API key:** [dashboard.fluxbeam.xyz](https://dashboard.fluxbeam.xyz/admin/apikeys)
+Built with ❤️ for Solana developers

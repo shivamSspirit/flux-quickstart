@@ -4,41 +4,42 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-FluxRPC quickstart - 3 essential Solana RPC methods with TypeScript.
+FluxRPC quickstart - 3 essential Solana RPC methods for beginners.
 
 ## Commands
 
 ```bash
 npm install    # Install dependencies
 npm run dev    # Build and run
+npm run build  # Compile TypeScript only
+npm start      # Run compiled code
 ```
 
-## Methods
+## The 3 Methods
 
-| Function | Returns |
-|----------|---------|
-| `getBalance(address)` | `{ address, lamports, sol }` |
-| `getBlockhash()` | `{ blockhash, lastValidBlockHeight }` |
-| `getAccountInfo(address)` | `{ owner, lamports, executable, dataLength }` |
+| Method | Purpose | Returns |
+|--------|---------|---------|
+| `getBalance(address)` | Check wallet SOL balance | `{ address, lamports, sol }` |
+| `getBlockhash()` | Get blockhash for transactions | `{ blockhash, lastValidBlockHeight }` |
+| `getAccountInfo(address)` | Read account details | `{ exists, owner, lamports, executable, dataLength }` |
 
 ## Code Structure
 
 ```
 src/index.ts
 ├── Types         → BalanceResult, BlockhashResult, AccountInfoResult
-├── Configuration → API key validation, region
-├── Connection    → Reusable Connection instance
-├── Utilities     → isValidPublicKey, lamportsToSol
-├── RPC Methods   → getBalance, getBlockhash, getAccountInfo
-└── Demo          → Example usage
+├── Configuration → API key from .env, region selection
+├── Connection    → Solana Connection instance
+├── Utilities     → isValidPublicKey(), lamportsToSol()
+├── RPC Methods   → getBalance(), getBlockhash(), getAccountInfo()
+└── Demo          → demo() function showing all methods
 ```
 
-## Config
+## Environment Variables
 
-`.env` file:
-```
-FLUXRPC_API_KEY=your-key
-FLUXRPC_REGION=eu
+```env
+FLUXRPC_API_KEY=your-key    # Required
+FLUXRPC_REGION=eu           # Optional: 'eu' or 'us'
 ```
 
 ## Endpoints
@@ -46,6 +47,6 @@ FLUXRPC_REGION=eu
 - EU: `https://eu.fluxrpc.com/?key={KEY}`
 - US: `https://us.fluxrpc.com/?key={KEY}`
 
-## API Key
+## Get API Key
 
 https://dashboard.fluxbeam.xyz/admin/apikeys
