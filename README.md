@@ -14,9 +14,14 @@
 
 ## Quick Start
 
-### 1. Get Your API Key
+### 1. Get Your API Key (60 seconds)
 
-Visit [dashboard.fluxbeam.xyz/admin/apikeys](https://dashboard.fluxbeam.xyz/admin/apikeys) to create your free API key.
+1. Go to [dashboard.fluxbeam.xyz](https://dashboard.fluxbeam.xyz)
+2. Sign in with Google, GitHub, or your Solana wallet
+3. Click **"Create API Key"**
+4. Copy your key (looks like: `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`)
+
+No credit card. No approval process.
 
 ### 2. Clone & Install
 
@@ -160,7 +165,7 @@ flux-quickstart/
 ## Next Steps
 
 - [FluxRPC Documentation](https://fluxrpc.com) - Full API reference
-- [Get API Key](https://dashboard.fluxbeam.xyz/admin/apikeys) - Create your key
+- [Get API Key](https://dashboard.fluxbeam.xyz) - Create your key
 - [Solana Cookbook](https://solanacookbook.com/) - Recipes & patterns
 - [Solana Web3.js Docs](https://solana-labs.github.io/solana-web3.js/) - Official SDK
 
