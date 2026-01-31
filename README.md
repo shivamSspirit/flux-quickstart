@@ -19,7 +19,7 @@
 1. Go to [dashboard.fluxbeam.xyz](https://dashboard.fluxbeam.xyz)
 2. Sign in with Google, GitHub, or your Solana wallet
 3. Click **"Create API Key"**
-4. Copy your key (looks like: `xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx`)
+4. Copy your key (looks like: `https://${FLUXRPC_REGION}.fluxrpc.com/?key=${FLUXRPC_API_KEY}`)
 
 No credit card. No approval process.
 
