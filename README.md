@@ -55,7 +55,7 @@ npm run dev
 FluxRPC Quickstart
 
 1. getBalance
-   Wallet:  DLRPZSrex3dk58mbJxfKEaxPMazchNogvZDSh26BhgRi
+   Wallet:  'your wallet address'
    Balance: 0.035737443 SOL
    Latency: 145ms
 
