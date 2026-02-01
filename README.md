@@ -168,6 +168,7 @@ https://${REGION}.fluxrpc.com/?key=${API_KEY}
 
 ## Next Steps
 
+- [Full Guide: FluxRPC Quickstart - Query Solana in 5 Minutes](https://dev.to/shivamsspirit/fluxrpc-quickstart-query-solana-in-5-minutes-mgk) - Step-by-step tutorial
 - [FluxRPC Documentation](https://fluxrpc.com) - Full API reference
 - [Get API Key](https://dashboard.fluxbeam.xyz) - Create your key
 - [Solana Cookbook](https://solanacookbook.com/) - Recipes & patterns
